@@ -25,10 +25,17 @@ class ConfigExtension implements ServiceProviderInterface
             $loader->registerNamespace('ConfigExtension', $class_path);
         }
 
+		if (!is_array($app['config.path'])) {
+			$app['config.path'] = array('config' => $app['config.path']);
+		}
 
-        $app['config'] = new Config(
-            $app['config.path'],
-            isset($app['config.replacements']) ? $app['config.replacements'] : array()
-        );
+	    $res = array();
+	    foreach($app['config.path'] as $key => $path) {
+		    $res[$key] = new Config(
+			    $path,
+			    isset($app['config.replacements']) ? $app['config.replacements'] : array()
+		    );
+	    }
+	    $app['config'] = $res;
     }
 }

@@ -7,7 +7,16 @@ Silex extension to read php .ini files used for configurations.
 
 Here is an example of its usage.
 
-We have this .ini file:
+We have these .ini files:
+
+paths.ini:
+
+    [doctrine]
+    dbal.class_path = "%basepath%/vendor/doctrine/lib/vendor/doctrine-dbal/lib/"
+    common.class_path = "%basepath%/vendor/doctrine/lib/vendor/doctrine-common/lib/"
+    orm.class_path = "%basepath%/vendor/doctrine/lib/"
+
+db.ini:
 
     [db]
     options.driver  = "pdo_pgsql"
@@ -15,9 +24,6 @@ We have this .ini file:
     options.host    = "localhost"
     options.user    = "myuser"
     options.password = "mysecretpass"
-    dbal.class_path = "%basepath%/vendor/doctrine/lib/vendor/doctrine-dbal/lib/"
-    common.class_path = "%basepath%/vendor/doctrine/lib/vendor/doctrine-common/lib/"
-    orm.class_path = "%basepath%/vendor/doctrine/lib/"
 
 And the index.php:
 
@@ -32,22 +38,22 @@ And the index.php:
 
     $app->register(new \ConfigExtension\Extension\ConfigExtension(), array(
         // specify the .ini file to read
-        'config.path' =>  __DIR__ . '/../config/app.ini',
+        'config.path' =>  array('paths' => __DIR__ . '/../config/paths.ini', 'db'=>'/../config/db.ini'),
         // and the var replacements
         'config.replacements' => array('basepath' => __DIR__ )
     ));
 
-    // retrieve just one value form teh config file
-    $db_name = $app['config']->get('db.name');
+    // retrieve just one value form the config file
+    $db_name = $app['config']['db']->get('options.dbname');
 
     // adds all the specified section to the silex application
-    $app['config']->registerSection($app, 'db');
+    $app['config']['db']->registerSection($app, 'db');
 
     // $app['db.options.driver'] now has pdo_pgsql
 
     $app->get('/', function () use ($app)
     {
-        return var_export($app['config']->getSection('db'), true);
+        return var_export($app['config']['paths']->getSection('doctrine'), true);
     });
     
     $app->run();
@@ -55,12 +61,7 @@ And the index.php:
 Visiting '/' shows:
 
     array (
-      'db.options.driver' => 'pdo_pgsql',
-      'db.options.dbname' => 'name',
-      'db.options.host' => 'localhost',
-      'db.options.user' => 'myuser',
-      'db.options.password' => 'mysecredpass',
-      'db.dbal.class_path' => '/Users/alinares/Sites/test/vendor/doctrine-dbal/lib/',
-      'db.common.class_path' => '/Users/alinares/Sites/test/vendor/doctrine/lib/vendor/doctrine-common/lib/',
-      'db.orm.class_path' => '/Users/alinares/Sites/test/vendor/doctrine/lib/',
+      'doctrine.dbal.class_path' => '/Users/alinares/Sites/test/vendor/doctrine-dbal/lib/',
+      'doctrine.common.class_path' => '/Users/alinares/Sites/test/vendor/doctrine/lib/vendor/doctrine-common/lib/',
+      'doctrine.orm.class_path' => '/Users/alinares/Sites/test/vendor/doctrine/lib/',
     )
