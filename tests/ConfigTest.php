@@ -4,8 +4,8 @@
  * Date: 26/05/11
  * @author alinares
  */
-use \ConfigExtension\Model\Config;
-require_once __DIR__ . '/../../ConfigExtension/src/ConfigExtension/Model/Config.php';
+use \ConfigProvider\Model\Config;
+require_once __DIR__ . '/../src/ConfigProvider/Model/Config.php';
 
 class ConfigTest extends PHPUnit_Framework_TestCase
 {

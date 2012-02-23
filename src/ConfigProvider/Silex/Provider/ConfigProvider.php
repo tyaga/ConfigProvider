@@ -4,15 +4,15 @@
  * Date: 12/04/11
  * @author alinares
  */
-namespace ConfigExtension\Extension;
+namespace ConfigProvider\Silex\Provider;
 
 use \Silex\ServiceProviderInterface;
-use \ConfigExtension\Model\Config;
+use \ConfigProvider\Model\Config;
 
 /**
  * Config silex extension
  */
-class ConfigExtension implements ServiceProviderInterface
+class ConfigProvider implements ServiceProviderInterface
 {
 
     function register(\Silex\Application $app)
@@ -22,7 +22,7 @@ class ConfigExtension implements ServiceProviderInterface
             /** @var $loader \Symfony\Component\ClassLoader\UniversalClassLoader */
             $loader = $app['autoloader'];
             $class_path = $app['config.class_path'];
-            $loader->registerNamespace('ConfigExtension', $class_path);
+            $loader->registerNamespace('ConfigProvider', $class_path);
         }
 
 		if (!is_array($app['config.path'])) {

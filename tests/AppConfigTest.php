@@ -6,8 +6,8 @@
  */
 require_once (__DIR__ . '/../../Silex/autoload.php');
 
-require_once __DIR__ . '/../../ConfigExtension/src/ConfigExtension/Model/Config.php';
-require_once __DIR__ . '/../../ConfigExtension/src/ConfigExtension/Extension/ConfigExtension.php';
+require_once __DIR__ . '/../src/ConfigProvider/Model/Config.php';
+require_once __DIR__ . '/../src/ConfigProvider/Silex/Provider/ConfigProvider.php';
 
 class AppConfigTest extends \Silex\WebTestCase
 {
@@ -26,7 +26,7 @@ class AppConfigTest extends \Silex\WebTestCase
 	public function testRegisterValues()
 	{
 		$app = $this->createApplication();
-		$app->register(new \ConfigExtension\Extension\ConfigExtension(), array(
+		$app->register(new \ConfigProvider\Silex\Provider\ConfigProvider(), array(
 			'config.path' => array(
 				'test' => __DIR__ . '/data/test.ini',
 				'db' => __DIR__ . '/data/db.ini'

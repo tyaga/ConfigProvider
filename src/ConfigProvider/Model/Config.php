@@ -1,5 +1,5 @@
 <?php
-namespace ConfigExtension\Model;
+namespace ConfigProvider\Model;
 
 /**
  * Retrieves configurations from ini files
